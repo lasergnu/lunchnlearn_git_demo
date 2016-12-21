@@ -23,7 +23,6 @@ cd /tmp/lnl
     git checkout master
     for c in {g..r}; do echo $c >> file; git commit -am $c; done
     git push
-cd /tmp/lnl
     git checkout -b homophone
     sed -i '/c/s/.*/c, sea and see are homophones/g' file
     git commit -am "homophone"
