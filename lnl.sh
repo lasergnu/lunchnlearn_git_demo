@@ -1,28 +1,31 @@
 #!/bin/bash
 set -x
 set -e
+
+u=/nett/uniq/git/lnl.git/hooks/update
+ssh qxgit@build "mv $u ${u}.moved" || true
+
 cd /tmp
     rm -rf /tmp/lnl
-    mkdir /tmp/lnl
+    git clone qxgit@build:/nett/uniq/git/lnl.git
 cd /tmp/lnl
+    for b in $(git branch --all | awk -F / '!/HEAD/ && /remotes/ {print $NF}'); do echo git push origin :${b}; git push origin :${b}; done
+cd /tmp
+    rm -rf /tmp/lnl
+    git clone qxgit@build:/nett/uniq/git/lnl.git
+cd /tmp/lnl
+    for t in $(git tag -l); do git push origin :refs/tags/${t}; git tag -d $t; done
     [ $(ls | wc -l) -eq 0 ] || exit 1
-    git init
     touch file
     git add file
     git commit -am "first commit"
     for c in {a..f}; do echo $c >> file; git commit -am $c; done
-cd /tmp
-    rm -rf lunchnlearn.git
-    git clone --bare lnl lunchnlearn.git
-    rm -rf /tmp/lnl
-    git clone lunchnlearn.git lnl
-cd /tmp/lnl
-    git checkout -b dev
+    git checkout -b experiment
     echo my changes >> file 
     git commit -am "wip"
     git checkout master
     for c in {g..r}; do echo $c >> file; git commit -am $c; done
-    git push
+    git push -u origin master
     git checkout -b homophone
     sed -i '/c/s/.*/c, sea and see are homophones/g' file
     git commit -am "homophone"
@@ -30,15 +33,10 @@ cd /tmp/lnl
     for c in {s..z}; do echo $c >> file; git commit -am $c; done
     git push
     git reset --hard master~8
-cd /tmp/lunchnlearn.git/hooks
-    git archive --remote=qxgit@build:/nett/uniq/git/devops.git HEAD update | tar -xv
-    git archive --remote=qxgit@build:/nett/uniq/git/devops.git HEAD post-receive | tar -xv
-    cat <<....EOF >> ../config
-    [hooks]
-	buildServer = http://somehost.lab.oslo-no0030.slb.com:8080/jenkins/
-	serverJobs = LnL-GIT
-        serverJobsSnapshots = LnL-SNAPSHOT-GIT 
-....EOF
+    #git branch --set-upstream origin/master master
+ssh qxgit@build "mv ${u}.moved $u"
+
+
 
 
     
