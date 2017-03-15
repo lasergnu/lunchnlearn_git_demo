@@ -30,5 +30,16 @@ cd /tmp/lnl
     for c in {s..z}; do echo $c >> file; git commit -am $c; done
     git push
     git reset --hard master~8
+cd /tmp/lunchnlearn.git/hooks
+    git archive --remote=qxgit@build:/nett/uniq/git/devops.git HEAD update | tar -xv
+    git archive --remote=qxgit@build:/nett/uniq/git/devops.git HEAD post-receive | tar -xv
+    cat <<....EOF >> ../config
+    [hooks]
+	buildServer = http://somehost.lab.oslo-no0030.slb.com:8080/jenkins/
+	serverJobs = LnL-GIT
+        serverJobsSnapshots = LnL-SNAPSHOT-GIT 
+....EOF
 
+
+    
 
