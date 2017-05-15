@@ -2,8 +2,13 @@
 set -x
 set -e
 
-u=/nett/uniq/git/lnl.git/hooks/update
-ssh qxgit@build "mv $u ${u}.moved" || true
+dir=/nett/uniq/git/lnl.git
+u=$dir/hooks/update
+
+ssh qxgit@build "cd $dir; \
+    git config --replace-all receive.denynonfastforwards false; \
+    git config --replace-all receive.denydeletecurrent false; \
+    mv $u ${u}.moved" || true
 
 cd /tmp
     rm -rf /tmp/lnl
@@ -26,15 +31,20 @@ cd /tmp/lnl
     git checkout master
     for c in {g..r}; do echo $c >> file; git commit -am $c; done
     git push -u origin master
-    git checkout -b homophone
-    sed -i '/c/s/.*/c, sea and see are homophones/g' file
+    git checkout -b h
+    sed -i '/c/s/.*/c, see and see are homophones/g' file
     git commit -am "homophone"
+    sed -i '/c/s/.*/c, sea and see are homophones/g' file
+    git commit -am "fix typo"
     git checkout master
     for c in {s..z}; do echo $c >> file; git commit -am $c; done
     git push
     git reset --hard master~8
-    #git branch --set-upstream origin/master master
-ssh qxgit@build "mv ${u}.moved $u"
+
+ssh qxgit@build "cd $dir; \
+    git config --replace-all receive.denynonfastforwards true; \
+    git config --replace-all receive.denydeletecurrent true; \
+    mv ${u}.moved $u" || true
 
 
 
