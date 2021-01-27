@@ -8,14 +8,23 @@ set -e
 #  - Simulated Origin
 #  - Simulated workspace
 
-dir=/tmp/lnl.git
-#u=$dir/hooks/update
+# Aims
+#  - importance of not revising history seen by others
+#  - how to reorganise your own commits (git add -p)
+#  - demonstrate squashing a commit (git rebase -i)
+#  - demonstrate imporance of being in sync with origin
+#  - demonstrate side effects of pull
+#  - demonstrate fetch --all, rebase
+#  - demonstrate resolving merge conflict
 
+
+# setup clean simulated origin
+dir=/tmp/lnl.git
+rm -rf $dir
 git clone --bare $HOME/lunchnlearn_git_demo $dir
 pushd $dir; \
     git config --replace-all receive.denynonfastforwards false; \
     git config --replace-all receive.denydeletecurrent false; \
-#    mv $u ${u}.moved
 popd
 
 # set up a clean workspace every run
@@ -72,12 +81,11 @@ cd /tmp/lnl
     git push
     git reset --hard master~8
 
-git clone --bare $HOME/lunchnlearn_git_demo $dir
-pushd $dir; \
-    git config --replace-all receive.denynonfastforwards false; \
-    git config --replace-all receive.denydeletecurrent false; \
-#    mv ${u}.moved $u
-popd
+#git clone --bare $HOME/lunchnlearn_git_demo $dir
+#pushd $dir; \
+#    git config --replace-all receive.denynonfastforwards false; \
+#    git config --replace-all receive.denydeletecurrent false; \
+#popd
 
 
 
