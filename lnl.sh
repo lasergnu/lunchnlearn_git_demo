@@ -2,22 +2,6 @@
 set -x
 set -e
 
-# Lunch n Learn demo
-# Components
-#  - Development git repo
-#  - Simulated Origin
-#  - Simulated workspace
-
-# Aims
-#  - importance of not revising history seen by others
-#  - how to reorganise your own commits (git add -p)
-#  - demonstrate squashing a commit (git rebase -i)
-#  - demonstrate imporance of being in sync with origin
-#  - demonstrate side effects of pull
-#  - demonstrate fetch --all, rebase
-#  - demonstrate resolving merge conflict
-
-
 # setup clean simulated origin
 dir=/tmp/lnl.git
 rm -rf $dir

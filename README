@@ -1,2 +1,19 @@
-This is repo for working on lnl.sh script
-To run, copy it to a demo dir and call it from there
+# Lunch n Learn demo
+
+# Components
+#  - Development git repo
+#  - Simulated Origin
+#  - Simulated workspace
+#  - Scripts demonstrating the concepts
+
+# Aims
+#  - importance of not revising history seen by others
+#  - how to reorganise your own commits (git add -p)
+#  - demonstrate squashing a commit (git rebase -i)
+#  - demonstrate imporance of being in sync with origin
+#  - demonstrate side effects of pull
+#  - demonstrate fetch --all, rebase
+#  - demonstrate resolving merge conflict
+
+# Run it right in this workspace
+# bash -x ./lnl.sh
