@@ -9,13 +9,13 @@ set -e
 #  - Simulated workspace
 
 dir=/tmp/lnl.git
-u=$dir/hooks/update
+#u=$dir/hooks/update
 
 git clone --bare $HOME/lunchnlearn_git_demo $dir
 pushd $dir; \
     git config --replace-all receive.denynonfastforwards false; \
     git config --replace-all receive.denydeletecurrent false; \
-    mv $u ${u}.moved
+#    mv $u ${u}.moved
 popd
 
 # set up a clean workspace every run
@@ -76,7 +76,7 @@ git clone --bare $HOME/lunchnlearn_git_demo $dir
 pushd $dir; \
     git config --replace-all receive.denynonfastforwards false; \
     git config --replace-all receive.denydeletecurrent false; \
-    mv ${u}.moved $u
+#    mv ${u}.moved $u
 popd
 
 
