@@ -2,28 +2,45 @@
 set -x
 set -e
 
-dir=/nett/uniq/git/lnl.git
+# Lunch n Learn demo
+# Components
+#  - Development git repo
+#  - Simulated Origin
+#  - Simulated workspace
+
+dir=/tmp/lnl.git
 u=$dir/hooks/update
 
-ssh qxgit@build "cd $dir; \
+git clone --bare $HOME/lunchnlearn_git_demo $dir
+pushd $dir; \
     git config --replace-all receive.denynonfastforwards false; \
     git config --replace-all receive.denydeletecurrent false; \
-    mv $u ${u}.moved" || true
+    mv $u ${u}.moved
+popd
 
-# set up the links to origin
+# set up a clean workspace every run
 cd /tmp 
     rm -rf /tmp/lnl
-    git clone qxgit@build:/nett/uniq/git/lnl.git
-# clean out origin
-cd /tmp/lnl 
-    for b in $(git branch --all | awk -F / '!/HEAD/ && /remotes/ {print $NF}'); do echo git push origin :${b}; git push origin :${b}; done
-# clean out local
+    git clone file://$dir lnl
+
+# remove commits from simulated origin
+cd /tmp/lnl
+    for b in $(git branch --all | awk -F / '!/HEAD/ && /remotes/ {print $NF}'); do
+        echo git push origin :${b}
+        git push origin :${b}
+    done
+
+# clean out simulated workspace
 cd /tmp 
     rm -rf /tmp/lnl
-    git clone qxgit@build:/nett/uniq/git/lnl.git
+    git clone file://$dir lnl
+
 # rebuild local from scratch
-cd /tmp/lnl 
-    for t in $(git tag -l); do git push origin :refs/tags/${t}; git tag -d $t; done
+cd /tmp/lnl
+    for t in $(git tag -l); do 
+        git push origin :refs/tags/${t}
+        git tag -d $t
+    done
     [ $(ls | wc -l) -eq 0 ] || exit 1
     touch file
     git add file
@@ -55,10 +72,13 @@ cd /tmp/lnl
     git push
     git reset --hard master~8
 
-ssh qxgit@build "cd $dir; \
-    git config --replace-all receive.denynonfastforwards true; \
-    git config --replace-all receive.denydeletecurrent true; \
-    mv ${u}.moved $u" || true
+git clone --bare $HOME/lunchnlearn_git_demo $dir
+pushd $dir; \
+    git config --replace-all receive.denynonfastforwards false; \
+    git config --replace-all receive.denydeletecurrent false; \
+    mv ${u}.moved $u
+popd
+
 
 
 
