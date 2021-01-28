@@ -64,6 +64,8 @@ cd /tmp/lnl
     for c in {s..z}; do echo $c >> file; git commit -am $c; done
     git push
     git reset --hard master~8
+    # unsync with origin
+    cp .git/refs/heads/master .git/refs/remotes/origin/master
 
 #git clone --bare $HOME/lunchnlearn_git_demo $dir
 #pushd $dir; \
