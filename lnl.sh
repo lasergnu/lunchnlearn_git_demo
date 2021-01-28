@@ -149,7 +149,10 @@ cd /tmp/lnl
     chmod +x *demo*.sh
     git add *demo*.sh
 
-    for j in {1..18}; do echo ========= $j ======== >> all.txt; cat ${j}demo* >> all.txt;  done
+    for ((j = 1 ; j <= $i ; j++)); do
+	echo ========= $j ======== >> all.txt
+	cat ${j}demo* >> all.txt
+    done
     git add all.txt
     # end tests
 
