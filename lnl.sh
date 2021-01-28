@@ -37,16 +37,37 @@ cd /tmp/lnl
     [ $(ls | wc -l) -eq 0 ] || exit 1
     touch file
     git add file
+    
     # begin tests
     i=0
-    echo 'set -x; git push origin experiment' > test$((++i)).sh
-    echo 'set -x; git push origin h:ready' > test$((++i)).sh
-    echo 'set -x; git co maser; git pull; git co h; git rebase master; git push origin h:ready' > test$((++i)).sh
-    echo 'set -x; git pull; git co h; git reset HEAD^; git amend; git rebase master; git push origin h:ready' > test$((++i)).sh
-    echo 'set -x; git co h; git pull --no-ff --commit --no-edit origin master; git push origin h:ready' > test$((++i)).sh
+    echo 'git fetch --all' > test$((++i)).sh
+    
+    echo 'git push origin experiment' > test$((++i)).sh
+    
+    echo 'git push origin h:master' > test$((++i)).sh
+    
+    echo 'git checkout master
+          git pull
+          git checkout h
+          git rebase master
+          git push origin h:master' > test$((++i)).sh
+    
+    echo 'git pull
+          git checkout h
+          git reset HEAD^
+          git amend
+          git rebase master
+          git push origin h:master' > test$((++i)).sh
+    
+    echo 'git checkout h
+          git pull --no-ff --commit --no-edit origin master
+          git push origin h:master' > test$((++i)).sh
+
+    sed -i 's/^\s*//' test*.sh
     chmod +x test*.sh
     git add test*.sh
     # end tests
+    
     git commit -am "first commit"
     for c in {a..f}; do echo $c >> file; git commit -am $c; done
     git checkout -b experiment
