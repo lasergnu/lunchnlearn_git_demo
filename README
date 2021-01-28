@@ -11,9 +11,17 @@
 #  - how to reorganise your own commits (git add -p)
 #  - demonstrate squashing a commit (git rebase -i)
 #  - demonstrate imporance of being in sync with origin
-#  - demonstrate side effects of pull
+#  - demonstrate good pull versus bad pull
 #  - demonstrate fetch --all, rebase
 #  - demonstrate resolving merge conflict
 
 # Run it right in this workspace
 # bash -x ./lnl.sh
+
+# Useful commands
+
+# reset  to start
+~/lunchnlearn_git_demo/lnl.sh; cd /tmp/lnl 
+
+# return to previous state
+for i in {1..4}; do echo test$i.sh; ./test$i.sh; done  
